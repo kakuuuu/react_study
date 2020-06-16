@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { SearchBar, Button,List } from "antd-mobile";
 import axios from "axios";
+import './search.scss'
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -38,7 +39,7 @@ export default class Search extends Component {
           
         />
         { this.state.focus&&this.state.value !== "" && (
-          <Button onClick={()=>{this.getSearchKeywords()}}>
+          <Button className="search-button" onClick={()=>{this.getSearchKeywords()}}>
             搜索 "{this.state.value}"
           </Button>
         )}
@@ -47,7 +48,7 @@ export default class Search extends Component {
             <Item
               arrow="horizontal"
               multipleLine
-              onClick={() => {}}
+              onClick={()=>{this.props.gotoSong('/song',item.id)}}
               platform="android"
             >
               {item.name}

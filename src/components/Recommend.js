@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Flex, List } from "antd-mobile";
+import { Flex, List, WingBlank } from "antd-mobile";
 import axios from "axios";
+import "./recommend.scss";
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -19,64 +20,67 @@ export default class Recommend extends Component {
     const { data: res } = await axios.get(
       "http://www.liaowang.xyz:3000/top/playlist?limit=6&order=new"
     );
-    console.log(res);
     if (res.code !== 200) return this.$message.error(res);
-    // this.playList = res.playlists
     this.setState({ playList: res.playlists });
-    console.log(this.state);
   }
   async getPersonalizedNewsong() {
     const { data: res } = await axios.get(
       "http://www.liaowang.xyz:3000/personalized/newsong"
     );
     this.setState({ newSongs: res.result });
-    console.log(this.state);
   }
   render() {
     return (
-      <div>
+      <div className="recommend">
         <h2>推荐歌单</h2>
-        <Flex align="start">
-          {this.state.playList.slice(0, 3).map((item) => (
-            <Flex.Item>
-              <div class="item">
-                <div class="img-wrap">
-                  <div class="desc-wrap">
-                    <span class="desc">{item.copywriter}</span>
+        <WingBlank size="sm">
+          <Flex align="start">
+            {this.state.playList.slice(0, 3).map((item) => (
+              <Flex.Item onClick={() => {
+                this.props.gotoSong('/playlist',item.id);
+              }}>
+                <div class="item">
+                  <div class="img-wrap">
+                    <img src={item.coverImgUrl + "?param=400y400"} alt="" />
                   </div>
-                  <img src={item.coverImgUrl + "?param=100y100"} alt="" />
+                  <p class="name">{item.name}</p>
                 </div>
-                <p class="name">{item.name}</p>
-              </div>
-            </Flex.Item>
-          ))}
-        </Flex>
-        <Flex align="start">
-          {this.state.playList.slice(3, 6).map((item) => (
-            <Flex.Item>
-              <div class="item">
-                <div class="img-wrap">
-                  <div class="desc-wrap">
-                    <span class="desc">{item.copywriter}</span>
+              </Flex.Item>
+            ))}
+          </Flex>
+          <Flex align="start">
+            {this.state.playList.slice(3, 6).map((item) => (
+              <Flex.Item onClick={() => {
+                this.props.gotoSong('/playlist',item.id);
+              }}>
+                <div class="item">
+                  <div class="img-wrap">
+                    <div class="desc-wrap">
+                      <span class="desc">{item.copywriter}</span>
+                    </div>
+                    <img src={item.coverImgUrl + "?param=400y400"} alt="" />
                   </div>
-                  <img src={item.coverImgUrl + "?param=100y100"} alt="" />
+                  <p class="name">{item.name}</p>
                 </div>
-                <p class="name">{item.name}</p>
-              </div>
-            </Flex.Item>
-          ))}
-        </Flex>
+              </Flex.Item>
+            ))}
+          </Flex>
+        </WingBlank>
+
         <h2>最新音乐</h2>
-        <List className="my-list">
+        <List className="music-list">
           {this.state.newSongs.map((item) => (
             <Item
               arrow="horizontal"
               multipleLine
               onClick={() => {}}
               platform="android"
+              onClick={() => {
+                this.props.gotoSong('/song',item.id);
+              }}
             >
               {item.name}{" "}
-              <Brief>
+              <Brief className="artist">
                 {item.song.artists[0].name}-{item.song.album.name}
               </Brief>
             </Item>

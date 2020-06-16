@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { List } from "antd-mobile";
+import { List,Flex } from "antd-mobile";
 import axios from "axios";
+import './hotlist.scss'
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -31,7 +32,7 @@ export default class HotList extends React.Component {
             <Item
               arrow="horizontal"
               multipleLine
-              onClick={() => {}}
+              onClick={()=>{this.props.gotoSong('/song',item.id)}}
               platform="android"
             >
               {item.name}
