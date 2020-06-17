@@ -1,11 +1,27 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Sound from "react-sound";
+import { connect } from "react-redux";
 import { Progress } from "antd-mobile";
 import Lyric from "lyric-parser";
 import BScroll from "better-scroll";
-import "./song.scss";
+import "../css/song.scss";
 
+function mapStateToProps(state) {
+  return {
+    value: state.num
+  };
+}
+
+function mapDispatchToProps(dispath) {
+  return {
+    onAddClick: () => {
+      // dispath(addAction);
+    }
+  };
+}
+
+// @connect(mapStateToProps, mapDispatchToProps)
 export default class Song extends Component {
   constructor(props) {
     super(props);
@@ -43,7 +59,7 @@ export default class Song extends Component {
       "http://www.liaowang.xyz:3000/song/detail?ids=" + this.state.id
     );
     if (res.code !== 200) return this.$message.error(res);
-    console.log(res);
+    // console.log(res);
     this.setState({
       songDetail: res.songs[0].al
     });
@@ -53,10 +69,23 @@ export default class Song extends Component {
       "http://www.liaowang.xyz:3000/lyric?id=" + this.state.id
     );
     if (res.code !== 200) return this.$message.error(res);
+    // console.log(res);
+    if (typeof res.lrc.lyric !== "undefined") {
+      if (res.lrc.lyric === "") {
+        this.setState({ lyric: [{ time: 0, txt: "纯音乐，请您欣赏" }] });
+        return;
+      }
+    }
+    if ("undefined" !== typeof res.nolyric) {
+      if (res.nolyric) {
+        this.setState({ lyric: [{ time: 0, txt: "无歌词" }] });
+        return;
+      }
+    }
     this.setState({ lyric: new Lyric(res.lrc.lyric).lines });
   }
   init = async (position, duration) => {
-    console.log(this.state);
+    // console.log(this.state);
     this.setState({
       percent: (position / duration) * 100
     });
@@ -91,9 +120,9 @@ export default class Song extends Component {
     return (
       <div
         className="mian-song"
-        style={{ "background-image": `url(${this.state.songDetail.picUrl})` }}
+        style={{ backgroundImage: `url(${this.state.songDetail.picUrl})` }}
       >
-        <div class="main-mask">
+        <div className="main-mask">
           <div className="main-music">
             <div className="flex-center">
               <div
@@ -115,8 +144,8 @@ export default class Song extends Component {
                 this.init(e.position, e.duration);
               }}
             ></Sound>
-            <div class="lyric-content" ref="lyric">
-              <div class="lyric-item-wrapper">
+            <div className="lyric-content" ref="lyric">
+              <div className="lyric-item-wrapper">
                 {(this.state.lyric || []).map((item, index) => (
                   <div
                     className={
@@ -127,6 +156,7 @@ export default class Song extends Component {
                     onClick={(e) => {
                       console.log(e);
                     }}
+                    key={index}
                   >
                     {item.txt}
                   </div>
@@ -139,15 +169,15 @@ export default class Song extends Component {
             <div className="play-control-absolute">
               <div className="play-control">
                 <div>
-                  <span class="iconfont icon-icon-test8"></span>
+                  <span className="iconfont icon-icon-test8"></span>
                 </div>
                 <div>
-                  <span class="iconfont icon-icon-test"></span>
+                  <span className="iconfont icon-icon-test"></span>
                 </div>
                 {this.state.playStatus === "PAUSED" && (
                   <div>
                     <span
-                      class="iconfont icon-icon-test2 center-icon"
+                      className="iconfont icon-icon-test2 center-icon"
                       onClick={() => {
                         if (this.state.playStatus === "PLAYING") {
                           this.setState({
@@ -167,7 +197,7 @@ export default class Song extends Component {
                 {this.state.playStatus === "PLAYING" && (
                   <div>
                     <span
-                      class="iconfont icon-icon-test1 center-icon"
+                      className="iconfont icon-icon-test1 center-icon"
                       onClick={() => {
                         if (this.state.playStatus === "PLAYING") {
                           this.setState({
@@ -185,11 +215,11 @@ export default class Song extends Component {
                 )}
 
                 <div>
-                  <span class="iconfont icon-icon-test6"></span>
+                  <span className="iconfont icon-icon-test6"></span>
                 </div>
 
                 <div>
-                  <span class="iconfont icon-icon-test14"></span>
+                  <span className="iconfont icon-icon-test14"></span>
                 </div>
               </div>
             </div>

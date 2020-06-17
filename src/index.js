@@ -1,20 +1,15 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import { Provider, connect } from "react-redux";
+import { createStore } from "redux";
 import { Tabs } from "antd-mobile";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
-// import axios from "axios";
-import Recommend from "./components/Recommend";
-import HotList from "./components/HotList";
-import Search from "./components/Search";
 import Song from "./components/Song";
-import Playlist from './components/Playlist'
-import "./globle.scss";
+import Playlist from "./components/Playlist";
+import Home from './components/Home'
+import "./css/globle.scss";
+import "normalize.css";
 
-const tabs = [
-  { title: <span>推荐音乐</span> },
-  { title: <span>热歌榜</span> },
-  { title: <span>搜索</span> }
-];
 
 
 function resetWidth() {
@@ -33,7 +28,12 @@ resetWidth();
 window.addEventListener("resize", function () {
   resetWidth();
 });
-class App extends React.Component {
+class App_Router extends React.Component {
+  constructor(props){
+    super(props)
+    
+    console.log(this.props)
+  }
   render() {
     return (
       <div>
@@ -47,32 +47,42 @@ class App extends React.Component {
   }
 }
 
-class Home extends Component {
-  gotoSong = (path,songid) => {
-    this.props.history.push({
-      pathname: path,
-      search: `?id=${songid}`
-    });
-  };
-  render() {
-    return (
-      <div>
-        <div className="top-content">
-          <h1><span class="iconfont icon-icon-test13"></span>React音乐</h1>
-        </div>
-        <Tabs tabs={tabs} initialPage={0} tabBarActiveTextColor="#d43c33" tabBarUnderlineStyle={{"border-color":"#d43c33"}} tabBarPosition="top">
-          <Recommend gotoSong={this.gotoSong}></Recommend>
-          <HotList gotoSong={this.gotoSong}></HotList>
-          <Search gotoSong={this.gotoSong}></Search>
-        </Tabs>
-      </div>
-    );
+const addAction = {
+  type: "add"
+};
+
+function reducer(state = { num: 0 }, action) {
+  switch (action.type) {
+    case "add":
+      state.num++;
+      break;
+
+    default:
+      break;
   }
+  return { ...state };
 }
 
+const store = createStore(reducer);
+
+function mapStateToProps(state) {
+  return {
+    value: state.num
+  };
+}
+
+function mapDispatchToProps(dispath) {
+  return {
+    onAddClick: () => {
+      dispath(addAction);
+    }
+  };
+}
+const App = connect(mapStateToProps, mapDispatchToProps)(App_Router);
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App></App>
-  </React.StrictMode>,
+    <Provider store={store}>
+      <App></App>
+    </Provider>,
   document.getElementById("root")
 );

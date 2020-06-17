@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { List,Flex } from "antd-mobile";
 import axios from "axios";
-import './hotlist.scss'
+import '../css/hotlist.scss'
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -19,7 +19,6 @@ export default class HotList extends React.Component {
       "http://www.liaowang.xyz:3000/top/list?idx=1"
     );
     this.setState({ hotList: res.playlist });
-    console.log(this.state);
   }
   render() {
     return (
@@ -28,12 +27,13 @@ export default class HotList extends React.Component {
           <img src={this.state.hotList.coverImgUrl}></img>
         </div>
         <List className="my-list">
-          {(this.state.hotList.tracks || []).map((item) => (
+          {(this.state.hotList.tracks || []).map((item,index) => (
             <Item
               arrow="horizontal"
               multipleLine
               onClick={()=>{this.props.gotoSong('/song',item.id)}}
               platform="android"
+              key={index}
             >
               {item.name}
               <Brief>

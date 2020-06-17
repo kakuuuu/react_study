@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { SearchBar, Button,List } from "antd-mobile";
 import axios from "axios";
-import './search.scss'
+import '../css/search.scss'
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -44,12 +44,13 @@ export default class Search extends Component {
           </Button>
         )}
         <List className="my-list">
-          {(this.state.result || []).map((item) => (
+          {(this.state.result || []).map((item,index) => (
             <Item
               arrow="horizontal"
               multipleLine
               onClick={()=>{this.props.gotoSong('/song',item.id)}}
               platform="android"
+              key={index}
             >
               {item.name}
               <Brief>

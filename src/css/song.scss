@@ -24,7 +24,7 @@
   left: 0;
   background: inherit;
   background-attachment: fixed;
-  filter: blur(4px);
+  filter: blur(10px);
 }
 .main-mask::after {
   content: "";
