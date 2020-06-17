@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Progress } from "antd-mobile";
 import Lyric from "lyric-parser";
 import BScroll from "better-scroll";
+import {fetchArticleList} from "../action/actions"
 import "../css/song.scss";
 
 function mapStateToProps(state) {
@@ -15,14 +16,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispath) {
   return {
-    onAddClick: () => {
-      // dispath(addAction);
+    fetchArticleList: () => {
+      dispath(fetchArticleList);
     }
   };
 }
 
-// @connect(mapStateToProps, mapDispatchToProps)
-export default class Song extends Component {
+class Song extends Component {
   constructor(props) {
     super(props);
     const params = new URLSearchParams(this.props.location.search);
@@ -229,3 +229,5 @@ export default class Song extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Song)

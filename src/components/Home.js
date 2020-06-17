@@ -4,6 +4,7 @@ import { Tabs } from "antd-mobile";
 import Recommend from "./Recommend";
 import HotList from "./HotList";
 import Search from "./Search";
+import { fetchArticleList } from "../action/actions";
 
 const tabs = [
   { title: <span>推荐音乐</span> },
@@ -19,16 +20,16 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispath) {
   return {
-    onAddClick: () => {
-    //   dispath(addAction);
+    fetchArticleList: () => {
+      dispath(fetchArticleList());
     }
   };
 }
 
-// @connect(mapStateToProps, mapDispatchToProps)
-export default class Home extends Component {
+class Home extends Component {
   constructor(props) {
     super(props);
+    console.log("Home:");
     console.log(this.props);
   }
   gotoSong = (path, songid) => {
@@ -60,3 +61,4 @@ export default class Home extends Component {
     );
   }
 }
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

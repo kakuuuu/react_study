@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Tag, List } from "antd-mobile";
 import axios from "axios";
+import {fetchArticleList} from "../action/actions"
 import "../css/playlist.scss";
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -14,14 +15,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispath) {
   return {
-    onAddClick: () => {
-      // dispath(addAction);
+    fetchArticleList: () => {
+      dispath(fetchArticleList);
     }
   };
 }
 
-// @connect(mapStateToProps, mapDispatchToProps)
-export default
 class Playlist extends Component {
   constructor(props) {
     super(props);
@@ -128,3 +127,5 @@ class Playlist extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Playlist)

@@ -2,15 +2,13 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Provider, connect } from "react-redux";
 import { createStore } from "redux";
-import { Tabs } from "antd-mobile";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import Song from "./components/Song";
 import Playlist from "./components/Playlist";
-import Home from './components/Home'
+import Home from "./components/Home";
+import store, { history } from "./store/store";
 import "./css/globle.scss";
 import "normalize.css";
-
-
 
 function resetWidth() {
   // 兼容ie浏览器 document.body.clientWidth
@@ -28,61 +26,23 @@ resetWidth();
 window.addEventListener("resize", function () {
   resetWidth();
 });
-class App_Router extends React.Component {
-  constructor(props){
-    super(props)
-    
-    console.log(this.props)
+class App_Router extends Component {
+  constructor(props) {
+    super(props);
+
+    console.log(this.props);
   }
   render() {
     return (
-      <div>
+      <Provider store={store}>
         <Router basename="/m">
           <Route path="/" exact component={Home}></Route>
           <Route path="/song" component={Song}></Route>
           <Route path="/playlist" component={Playlist}></Route>
         </Router>
-      </div>
+      </Provider>
     );
   }
 }
 
-const addAction = {
-  type: "add"
-};
-
-function reducer(state = { num: 0 }, action) {
-  switch (action.type) {
-    case "add":
-      state.num++;
-      break;
-
-    default:
-      break;
-  }
-  return { ...state };
-}
-
-const store = createStore(reducer);
-
-function mapStateToProps(state) {
-  return {
-    value: state.num
-  };
-}
-
-function mapDispatchToProps(dispath) {
-  return {
-    onAddClick: () => {
-      dispath(addAction);
-    }
-  };
-}
-const App = connect(mapStateToProps, mapDispatchToProps)(App_Router);
-
-ReactDOM.render(
-    <Provider store={store}>
-      <App></App>
-    </Provider>,
-  document.getElementById("root")
-);
+ReactDOM.render(<App_Router></App_Router>, document.getElementById("root"));
