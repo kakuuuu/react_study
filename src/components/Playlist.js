@@ -2,25 +2,34 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Tag, List } from "antd-mobile";
 import axios from "axios";
-import {fetchArticleList} from "../action/actions"
 import "../css/playlist.scss";
 const Item = List.Item;
 const Brief = Item.Brief;
 
 function mapStateToProps(state) {
   return {
-    value: state.num
+    musicList: state.musicList,
+    inputItem: state.inputItem
   };
 }
 
-function mapDispatchToProps(dispath) {
+function mapDispatchToProps(dispatch) {
   return {
-    fetchArticleList: () => {
-      dispath(fetchArticleList);
+    setNewItem: (Item) => {
+      let actions={
+        type:"change_inputItem",
+        item:Item
+      }
+      dispatch(actions)
+    },
+    addMusic: () => {
+      let actions={
+        type:"add_Item"
+      }
+      dispatch(actions)
     }
   };
 }
-
 class Playlist extends Component {
   constructor(props) {
     super(props);

@@ -1,1 +1,1 @@
-export { fetchArticleList } from "./fetchArticleList.js";
+export { fetchArticleList, addMusic,setNewItem } from "./fetchArticleList.js";

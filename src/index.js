@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Provider, connect } from "react-redux";
-import { createStore } from "redux";
-import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Song from "./components/Song";
 import Playlist from "./components/Playlist";
 import Home from "./components/Home";

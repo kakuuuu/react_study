@@ -5,19 +5,29 @@ import { connect } from "react-redux";
 import { Progress } from "antd-mobile";
 import Lyric from "lyric-parser";
 import BScroll from "better-scroll";
-import {fetchArticleList} from "../action/actions"
 import "../css/song.scss";
 
 function mapStateToProps(state) {
   return {
-    value: state.num
+    musicList: state.musicList,
+    inputItem: state.inputItem
   };
 }
 
-function mapDispatchToProps(dispath) {
+function mapDispatchToProps(dispatch) {
   return {
-    fetchArticleList: () => {
-      dispath(fetchArticleList);
+    setNewItem: (Item) => {
+      let actions = {
+        type: "change_inputItem",
+        item: Item
+      };
+      dispatch(actions);
+    },
+    addMusic: () => {
+      let actions = {
+        type: "add_Item"
+      };
+      dispatch(actions);
     }
   };
 }
@@ -43,7 +53,7 @@ class Song extends Component {
     this.getMusicUrl();
     this.getsongDetail();
     this.getMusicLyric();
-    console.log(this.refs);
+    console.log(this.props);
     // this.throttle(this.init(), 500);
     this.lyricScrollInit();
   }
@@ -230,4 +240,4 @@ class Song extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Song)
+export default connect(mapStateToProps, mapDispatchToProps)(Song);

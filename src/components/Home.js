@@ -4,7 +4,7 @@ import { Tabs } from "antd-mobile";
 import Recommend from "./Recommend";
 import HotList from "./HotList";
 import Search from "./Search";
-import { fetchArticleList } from "../action/actions";
+
 
 const tabs = [
   { title: <span>推荐音乐</span> },
@@ -14,14 +14,25 @@ const tabs = [
 
 function mapStateToProps(state) {
   return {
-    value: state.num
+    musicList: state.musicList,
+    inputItem: state.inputItem
   };
 }
 
-function mapDispatchToProps(dispath) {
+function mapDispatchToProps(dispatch) {
   return {
-    fetchArticleList: () => {
-      dispath(fetchArticleList());
+    setNewItem: (Item) => {
+      let actions={
+        type:"change_inputItem",
+        item:Item
+      }
+      dispatch(actions)
+    },
+    addMusic: () => {
+      let actions={
+        type:"add_Item"
+      }
+      dispatch(actions)
     }
   };
 }
@@ -29,7 +40,12 @@ function mapDispatchToProps(dispath) {
 class Home extends Component {
   constructor(props) {
     super(props);
+  }
+  componentDidMount() {
     console.log("Home:");
+    
+    this.props.setNewItem({name:"张三",age:18});
+    this.props.addMusic()
     console.log(this.props);
   }
   gotoSong = (path, songid) => {

@@ -15,6 +15,8 @@ export default class Recommend extends Component {
   componentDidMount() {
     this.getPersonalizedPlaylist();
     this.getPersonalizedNewsong();
+    console.log("recommend")
+    console.log(this.props)
   }
 
   async getPersonalizedPlaylist() {
