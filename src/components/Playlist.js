@@ -8,8 +8,8 @@ const Brief = Item.Brief;
 
 function mapStateToProps(state) {
   return {
-    musicList: state.musicList,
-    inputItem: state.inputItem
+    musiclist: state.default.musicList,
+    inputitem: state.default.inputItem
   };
 }
 
@@ -33,8 +33,6 @@ function mapDispatchToProps(dispatch) {
 class Playlist extends Component {
   constructor(props) {
     super(props);
-    // console.log("Playlist_constructor")
-    // console.log(props)
     const params = new URLSearchParams(this.props.location.search);
     this.state = {
       id: params.get("id"),
@@ -46,6 +44,9 @@ class Playlist extends Component {
   }
   componentDidMount() {
     this.getsongDetail();
+  }
+  componentDidUpdate(){
+    console.log(this.props);
   }
   gotoSong = (path, songid) => {
     this.props.history.push({

@@ -9,7 +9,6 @@ const Brief = Item.Brief;
 export default class Recommend extends Component {
   constructor(props) {
     super(props);
-    // 不要在这里调用 this.setState()
     this.state = { playList: [], newSongs: [] };
   }
   componentDidMount() {
@@ -82,6 +81,8 @@ export default class Recommend extends Component {
               onClick={() => {}}
               platform="android"
               onClick={() => {
+                this.props.setNewItem(item);
+                this.props.addMusic();
                 this.props.gotoSong("/song", item.id);
               }}
               key={index}

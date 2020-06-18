@@ -13,40 +13,39 @@ const tabs = [
 ];
 
 function mapStateToProps(state) {
+  console.log(state);
   return {
-    musicList: state.musicList,
-    inputItem: state.inputItem
+    musiclist: state.default.musicList,
+    inputitem: state.default.inputItem
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     setNewItem: (Item) => {
-      let actions={
-        type:"change_inputItem",
-        item:Item
-      }
-      dispatch(actions)
+      let actions = {
+        type: "change_inputItem",
+        item: Item
+      };
+      dispatch(actions);
     },
     addMusic: () => {
-      let actions={
-        type:"add_Item"
-      }
-      dispatch(actions)
+      let actions = {
+        type: "add_Item"
+      };
+      dispatch(actions);
     }
   };
 }
 
-class Home extends Component {
+class Homes extends Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
-    console.log("Home:");
-    
-    this.props.setNewItem({name:"张三",age:18});
-    this.props.addMusic()
-    console.log(this.props);
+
+  componentDidMount() {}
+  componentDidUpdate() {
+    // console.log(this.props);
   }
   gotoSong = (path, songid) => {
     this.props.history.push({
@@ -69,7 +68,13 @@ class Home extends Component {
           tabBarUnderlineStyle={{ borderColor: "#d43c33" }}
           tabBarPosition="top"
         >
-          <Recommend gotoSong={this.gotoSong}></Recommend>
+          <Recommend
+            setNewItem={this.props.setNewItem}
+            addMusic={this.props.addMusic}
+            inputitem={this.props.inputitem}
+            musiclist={this.props.musiclist}
+            gotoSong={this.gotoSong}
+          ></Recommend>
           <HotList gotoSong={this.gotoSong}></HotList>
           <Search gotoSong={this.gotoSong}></Search>
         </Tabs>
@@ -77,4 +82,4 @@ class Home extends Component {
     );
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Homes);

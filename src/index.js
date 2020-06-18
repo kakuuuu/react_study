@@ -25,6 +25,9 @@ resetWidth();
 window.addEventListener("resize", function () {
   resetWidth();
 });
+
+
+
 class App_Router extends Component {
   constructor(props) {
     super(props);
@@ -33,13 +36,13 @@ class App_Router extends Component {
   }
   render() {
     return (
-      <Provider store={store}>
-        <Router basename="/m">
-          <Route path="/" exact component={Home}></Route>
-          <Route path="/song" component={Song}></Route>
-          <Route path="/playlist" component={Playlist}></Route>
-        </Router>
-      </Provider>
+        <Provider store={store}>
+          <Router basename="/m">
+            <Route path="/" exact component={Home}></Route>
+            <Route path="/song" component={Song}></Route>
+            <Route path="/playlist" component={Playlist}></Route>
+          </Router>
+        </Provider>
     );
   }
 }

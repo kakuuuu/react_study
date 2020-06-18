@@ -1,9 +1,3 @@
-export function fetchArticleList() {
-  return (dispatch, getState) => {
-    console.log(dispatch);
-    console.log(getState);
-  };
-}
 export function addMusic() {
   return (dispatch, getState) => {
     let actions={

@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import axios from "axios";
 import Sound from "react-sound";
 import { connect } from "react-redux";
-import { Progress } from "antd-mobile";
+import { Slider, Popover } from "antd-mobile";
 import Lyric from "lyric-parser";
 import BScroll from "better-scroll";
 import "../css/song.scss";
 
 function mapStateToProps(state) {
   return {
-    musicList: state.musicList,
-    inputItem: state.inputItem
+    musiclist: state.default.musicList,
+    inputitem: state.default.inputItem
   };
 }
 
@@ -46,16 +46,16 @@ class Song extends Component {
       position: 0,
       percent: 0,
       length: 0,
-      activeindex: 0
+      activeindex: 0,
+      visible: false
     };
   }
   componentDidMount() {
     this.getMusicUrl();
     this.getsongDetail();
     this.getMusicLyric();
-    console.log(this.props);
-    // this.throttle(this.init(), 500);
     this.lyricScrollInit();
+    console.log(this.props);
   }
   async getMusicUrl() {
     const { data: res } = await axios.get(
@@ -96,8 +96,9 @@ class Song extends Component {
   }
   init = async (position, duration) => {
     // console.log(this.state);
+    let temp=(position / duration) * 10000;
     this.setState({
-      percent: (position / duration) * 100
+      percent: temp
     });
 
     var timeStamp = position;
@@ -174,9 +175,53 @@ class Song extends Component {
               </div>
             </div>
             <div className="play-line">
-              <Progress percent={this.state.percent} position="normal" />
+              {/* <Progress percent={this.state.percent} position="normal" /> */}
+              <Slider
+                value={this.state.percent}
+                max={10000}
+                trackStyle={{
+                  backgroundColor: "#fff",
+                  height: "5px"
+                }}
+                railStyle={{
+                  backgroundColor: "#aaa",
+                  height: "5px"
+                }}
+                handleStyle={{
+                  borderColor: "#fff",
+                  height: "0.14rem",
+                  width: "0.14rem",
+                  marginLeft: "-0.07rem",
+                  marginTop: "-0.045rem",
+                  backgroundColor: "#fff"
+                }}
+                // onChange={this.log("change")}
+                // onAfterChange={this.log("afterChange")}
+              />
             </div>
             <div className="play-control-absolute">
+              <Popover
+                mask
+                visible={this.state.visible}
+                placement="topRight"
+              overlay={(this.props.musiclist).map((item,index)=>(<Popover.Item className="popover-item">{item.name}<span className="popover-item-artist">-{item.song.artists[0].name}</span></Popover.Item>))}
+                align={{
+                  overflow: { adjustY: 0, adjustX: 0 },
+                  offset: [-10, 0]
+                }}
+                onVisibleChange={this.handleVisibleChange}
+                onSelect={this.onSelect}
+              >
+                <div
+                  style={{
+                    height: "100%",
+                    padding: "0 15px",
+                    marginRight: "0",
+                    display: "flex",
+                    alignItems: "center"
+                  }}
+                ></div>
+              </Popover>
               <div className="play-control">
                 <div>
                   <span className="iconfont icon-icon-test8"></span>
@@ -229,7 +274,12 @@ class Song extends Component {
                 </div>
 
                 <div>
-                  <span className="iconfont icon-icon-test14"></span>
+                  <span
+                    className="iconfont icon-icon-test14"
+                    onClick={() => {
+                      this.setState({ visible: !this.state.visible });
+                    }}
+                  ></span>
                 </div>
               </div>
             </div>
